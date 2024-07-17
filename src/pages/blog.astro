@@ -1,9 +1,21 @@
 ---
+import Card from "../components/Card.astro";
 import Layout from "../layouts/Layout.astro";
+
+const allPosts = await Astro.glob('./blog/*.md*');
 ---
 
 <Layout title="Blog">
     <main>
-        <h1>Blog Area</h1>
+        <h1>Blog Posts here:</h1>
+        <ul role="list" class="link-card-grid">
+            {allPosts.map((post) => 
+                <Card 
+                    href={post.url} 
+                    title={post.frontmatter.title} 
+                    body={post.frontmatter.description} 
+                />
+            )}
+        </ul>
     </main>
 </Layout>
