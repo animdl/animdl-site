@@ -1,5 +1,8 @@
 ---
+layout: ../../layouts/BlogPost.astro
 title: Hello, World!
+date: "January 11, 2024"
+description: This is the description section
 ---
 
 ## Hello World!

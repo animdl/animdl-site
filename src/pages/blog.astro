@@ -1,5 +1,5 @@
 ---
-import Card from "../components/Card.astro";
+import Articles from "../components/Articles.astro";
 import Layout from "../layouts/Layout.astro";
 
 const allPosts = await Astro.glob("./blog/*.md*");
@@ -7,12 +7,14 @@ const allPosts = await Astro.glob("./blog/*.md*");
 
 <Layout title="Blog">
     <main>
-        <h1>Blog Posts Here:</h1>
+        <h1>Blog</h1>
+        <p>Ctrl+F to search posts.</p>
         <ul role="list" class="link-card-grid">
             {allPosts.map((post) => 
-                <Card
+                <Articles
                     href={post.url}
                     title={post.frontmatter.title}
+                    date={post.frontmatter.date}
                     body={post.frontmatter.description}
                 />
             )}
@@ -23,19 +25,27 @@ const allPosts = await Astro.glob("./blog/*.md*");
 <style>
     main {
         margin: auto;
-        padding: 4rem;
-        width: 800px;
-        max-width: calc(100% - 2rem);
+        padding: .5rem;
+        width: 1200px;
+        max-width: calc(100% - 1rem);
+    }
+    @media (max-width: 640px) {
+        main {
+            width: 100%;
+            padding: .5rem;
+        }
     }
     h1 {
-        font-size: 4rem;
-        font-weight: 800;
+        font-size: 3rem;
+        font-weight: 700;
         margin: 1rem;
+    }
+    p {
+        padding-left: 2rem;
     }
     .link-card-grid {
         display: grid;
-        //grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
         gap: 1rem;
-        padding: 1rem;
+        padding: .5rem;
     }
 </style>

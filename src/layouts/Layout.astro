@@ -1,58 +1,167 @@
 ---
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
 
-import Header from '../components/Header.astro';
-
-import Footer from '../components/Footer.astro';
+import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<!-- main site layout, implements components -->
-	<body>
-		<Header />
-		<slot />
-		<Footer />
-	</body>
+  <head>
+    <!-- theme-change script -->
+    <script is:inline>
+      // ☝️ This script prevent the FART effect.
+      if (localStorage.getItem("theme") === null) {
+        document.documentElement.setAttribute("data-theme", "luxury");
+      } else
+        document.documentElement.setAttribute(
+          "data-theme",
+          localStorage.getItem("theme")
+        );
+      // "theme" LocalStorage value is set by the package to remember user preference.
+      // The value is checked and applyed before rendering anything.
+    </script>
+
+    <script>
+      import { themeChange } from "theme-change";
+      themeChange();
+      // 👆 you could import the CDN directly instead of these two lines
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <!-- main site layout, implements components -->
+  <body class="h-dvh">
+    <div class="navbar">
+      <!-- left-bias elements -->
+      <div class="navbar-start">
+        <!-- dropdown menu; icons + elements -->
+        <a class="btn btn-ghost text-xl" href="/">Animdl</a>
+      </div>
+      <!-- center-bias elements -->
+      <div class="navbar-center hidden lg:flex">
+        <!-- menu items -->
+        <ul class="menu menu-horizontal px-1">
+          <li><a href="/">Home</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li>
+            <details>
+              <summary><a href="/projects">Projects</a></summary>
+              <ul class="p-2">
+                <li><a href="/projects/fullstack">FullStack</a></li>
+                <li><a href="/projects/native">Native</a></li>
+                <li><a href="/projects/cybersecurity">CyberSecurity</a></li>
+              </ul>
+            </details>
+          </li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+      <!-- right-bias elements -->
+      <div class="navbar-end">
+        <!-- reactive menu; icons + elements -->
+        <div class="dropdown dropdown-end mr-2">
+          <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+            <!-- hamburger icon -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h8m-8 6h16"></path>
+            </svg>
+          </div>
+          <!-- menu items -->
+          <ul
+            tabindex="0"
+            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          >
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li>
+              <details>
+                <summary><a href="/projects">Projects</a></summary>
+                <ul class="p-2">
+                  <li><a href="/projects/fullstack">FullStack</a></li>
+                  <li><a href="/projects/native">Native</a></li>
+                  <li><a href="/projects/cybersecurity">CyberSecurity</a></li>
+                </ul>
+              </details>
+            </li>
+            <li><a href="/about">About</a></li>
+          </ul>
+        </div>
+        <!-- toggle theme button -->
+        <button
+          class="btn btn-square"
+          data-toggle-theme="nord,luxury"
+          data-act-class="ACTIVECLASS"
+        >
+          <svg
+            class="h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="12" r="5"></circle>
+            <path
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="page">
+      <slot />
+    </div>
+    <Footer />
+  </body>
 </html>
+
 <style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 30%,
+      white 60%
+    );
+  }
+  html {
+    font-family: system-ui, sans-serif;
+    background: #13151a;
+    background-size: 224px;
+  }
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
 </style>
