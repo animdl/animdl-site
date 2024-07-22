@@ -8,7 +8,7 @@ const allPosts = await Astro.glob("./blog/*.md*");
 <Layout title="Blog">
     <main>
         <h1>Blog</h1>
-        <p>Ctrl+F to search posts.</p>
+        <p>Ctrl+f to search posts.</p>
         <ul role="list" class="link-card-grid">
             {allPosts.map((post) => 
                 <Articles
